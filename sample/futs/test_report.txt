@@ -1,0 +1,7 @@
+** stress1.sas
+
+   test_init (2 tests / 0 errors)                               ** passed **
+   test_import (2 tests / 1 errors)                             ** FAILED **
+   test_prepare (2 tests / 0 errors)                            ** passed **
+
+** stress1.sas: 1 out of 6 tests tests failed => RED
