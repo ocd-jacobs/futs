@@ -2,6 +2,8 @@
 
    test_init (2 tests / 0 errors)                               ** passed **
    test_import (2 tests / 1 errors)                             ** FAILED **
-   test_prepare (2 tests / 0 errors)                            ** passed **
+       >> uitvoer dataset niet gevonden
+   test_prepare (2 tests / 1 errors)                            ** FAILED **
+       >> dataset niet gesorteerd op rust hartslag
 
-** stress1.sas: 1 out of 6 tests tests failed => RED
+** stress1.sas: 2 out of 6 tests tests failed => RED

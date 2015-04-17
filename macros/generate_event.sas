@@ -71,7 +71,7 @@ options linesize=&OPT_LINESIZE;
  */
 %if %length(&ON_EVENT) > 0 %then
 %do;
-    *%unquote(&ON_EVENT)
+    *%unquote(&ON_EVENT);
 %end;
 
 /* check for abort
@@ -86,5 +86,15 @@ options linesize=&OPT_LINESIZE;
 %end;
 
 %let futs_tst_err = %eval(&futs_tst_err. + 1);
+
+%if %length(&ATTACHDATA) > 0 %then
+%do;
+  data _null_;
+    descr_index = &futs_test_descr_n. + 1;
+    
+    call symputx('futs_test_descr_n', descr_index );
+    call symputx('futs_test_descr' || strip(put(descr_index, 3.)), %str(&ATTACHDATA.));
+  run;
+%end;
 
 %mend generate_event;

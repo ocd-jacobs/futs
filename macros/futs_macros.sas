@@ -79,6 +79,11 @@
             ifc(&futs_tst_err. = 0, '** passed **', '** FAILED **');
 
         put @4 l;  
+        
+        do i = 1 to &futs_test_descr_n.;
+           l = symget('futs_test_descr' || strip(put(i,3.)));
+           put @8 '>> ' l;
+        end;
       run;
       
       %let futs_tst_cnt=0;   
@@ -104,6 +109,24 @@
       put l;    
     run;
   %mend;
+
+%macro futs_init_array;
+  %do i = 1 %to 100;
+    %global futs_test_descr&i;
+    %let futs_test_descr&i = -;
+  %end;
+  
+  %global futs_test_descr_n;
+  %let futs_test_descr_n = 0;
+%mend;
+
+%futs_init_array;
+  
+%macro futs_tst_init;
+  data _null_;
+    call symputx('futs_test_descr_n', 0);
+  run;
+%mend;
 
 /* Check if the counting variables are already defined indicating either an interupted
    unittest execution or the variable name being used somewhere in user defined code.
@@ -134,4 +157,4 @@
   
   %let futs_tst_cnt=0;
   %let futs_tot_cnt=0;
-  
+    

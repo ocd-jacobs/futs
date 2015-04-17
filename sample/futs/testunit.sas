@@ -37,6 +37,8 @@
 /* ******************************************************************************************** */
 
 %macro test_init;
+    %futs_tst_init;
+
     %init;
     
     %assert_zero(%sysfunc(libref(clinic)),message=Library 'clinic' not assigned);
@@ -46,15 +48,19 @@
 %mend;
 
 %macro test_import;
+    %futs_tst_init;
+    
     %import_data;
     
-    %assert_exist(clinic.stress1);
-    %assert_equal(%obs(clinic.stress), 6);
+    %assert_exist(clinic.stress1, attachdata='uitvoer dataset niet gevonden');
+    %assert_equal(%obs(clinic.stress), 6, attachdata='aantal records wijkt af van verwachting');
     
     %futs_tst_finish(test_import);
 %mend;
 
 %macro test_prepare;
+    %futs_tst_init;
+
     %prepare_data;
     %assert_exist(work.stress);
 
@@ -76,7 +82,7 @@
     run;
     
     
-    %assert_sym_compare(&first_hr., &last_hr., lt);
+    %assert_sym_compare(&first_hr., &last_hr., gt, attachdata='dataset niet gesorteerd op rust hartslag');
     
     %futs_tst_finish(test_prepare);
 %mend;
