@@ -20,6 +20,8 @@
            the individual tests. Reporting is done completely in SAS.
  */
 
+/* Set maximun number of tests per test case. */
+  %let FUTS_MAX_TESTS = 100;
 
 /* Include the modified futs macros needed for unit testing
  */
@@ -64,7 +66,7 @@
      Prints the total number of tests performed and the number of failed tests
      for testcase &test_name. to the test report futs_rpt.
  */
-  %macro futs_tst_finish(test_name);
+  %macro futs_case_finish(case_description);
       %let futs_tot_err = %eval(&futs_tot_err.+&futs_tst_err.);
       %let futs_tot_cnt = %eval(&futs_tot_cnt.+&futs_tst_cnt.);
       
@@ -72,10 +74,12 @@
         file futs_rpt mod;        
         length l $ 120;
 
-        l = "&test_name (&futs_tst_cnt. tests / &futs_tst_err. errors)";
+        l = lowcase("&futs_macro_name.");
+        l = strip(l) || ": &case_description.";
+        l = strip(l) || " (&futs_tst_cnt. tests / &futs_tst_err. errors)";
         
         l = strip(l) ||
-            repeat(' ', 60 - length(l)) ||
+            repeat(' ', 70 - length(l)) ||
             ifc(&futs_tst_err. = 0, '** passed **', '** FAILED **');
 
         put @4 l;  
@@ -110,24 +114,29 @@
     run;
   %mend;
 
-%macro futs_init_array;
-  %do i = 1 %to 100;
-    %global futs_test_descr&i;
-    %let futs_test_descr&i = -;
-  %end;
+/* Create macro array &futs_test_descr.
+   This array will contain the descriptions of failed tests. 
+ */
+  %macro futs_init_array;
+    %do i = 1 %to &FUTS_MAX_TESTS.;
+      %global futs_test_descr&i;
+      %let futs_test_descr&i = -;
+    %end;
+    
+    %global futs_test_descr_n;
+    %let futs_test_descr_n = 0;
+  %mend;
+  %futs_init_array;
   
-  %global futs_test_descr_n;
-  %let futs_test_descr_n = 0;
-%mend;
-
-%futs_init_array;
+/* Initialize a new test case by resetting the array counter of &futs_text_descr.
+   to zero.
+ */
+  %macro futs_case_init;
+    data _null_;
+      call symputx('futs_test_descr_n', 0);
+    run;
+  %mend;
   
-%macro futs_tst_init;
-  data _null_;
-    call symputx('futs_test_descr_n', 0);
-  run;
-%mend;
-
 /* Check if the counting variables are already defined indicating either an interupted
    unittest execution or the variable name being used somewhere in user defined code.
    If variables are found to be defined write an error message to the log file and
@@ -152,9 +161,13 @@
 
 /* Initialize the counting variables.
  */
-  %let futs_tst_err=0;
-  %let futs_tot_err=0;
+  %let futs_tst_err = 0;
+  %let futs_tot_err = 0;
   
-  %let futs_tst_cnt=0;
-  %let futs_tot_cnt=0;
+  %let futs_tst_cnt = 0;
+  %let futs_tot_cnt = 0;
+
+/* Initialize the macro variable that will contain the name of the running test case
+ */
+  %let futs_macro_name = -;
     

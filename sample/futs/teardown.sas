@@ -33,5 +33,6 @@
           futs_tot_cnt
           futs_program_directory
           futs_src
-          futs_directory;
+          futs_directory
+          futs_macro_name;
   
