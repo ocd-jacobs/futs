@@ -61,6 +61,8 @@
  *  properties may be passed in this format.
  * @param ON_EVENT - Optional block of SAS code to execute 
  *  if the event is fired.
+ * @param DESCRIPTION - Optional quoted string describing the event that
+ *  is to be generated. 
  * @param ABORT - Flag instructing the event system if it should end
  *  the SAS session and stop the batch run.  Valid values are
  *  (YES|TRUE|NO|FALSE)
@@ -81,7 +83,7 @@
         METRIC=,
         PROPERTIES=,
         ON_EVENT=,
-        ABORT= );
+        DESCRIPTION=, ABORT= );
 
 %local FIRE_EVENT;
 %LET FIRE_EVENT=0;
@@ -184,7 +186,7 @@
            METRIC=&METRIC,
            PROPERTIES=&PROPERTIES,
            ON_EVENT=&ON_EVENT,
-           ABORT=&ABORT);
+           DESCRIPTION=&DESCRIPTION, ABORT=&ABORT);
 %end;
 
 

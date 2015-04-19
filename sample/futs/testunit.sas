@@ -37,57 +37,56 @@
 /* ******************************************************************************************** */
 
 %macro test_init;
-    %let futs_macro_name = &sysmacroname.;
-    %futs_case_init;
+  %let futs_macro_name = &sysmacroname.;
+  %futs_case_init('werk voorbereiding');
 
-    %init;
-    
-    %assert_zero(%sysfunc(libref(clinic)),message=Library 'clinic' not assigned);
-    %assert_fexist(tests);
-    
-    %futs_case_finish(werk voorbereiding);
+  %init;
+  
+  %assert_zero(%sysfunc(libref(clinic)),message=Library 'clinic' not assigned);
+  %assert_fexist(tests);
+  
+  %futs_case_finish;
 %mend;
 
 %macro test_import;
-    %let futs_macro_name = &sysmacroname.;
-    %futs_case_init;
-    
-    %import_data;
-    
-    %assert_exist(clinic.stress1, attachdata='uitvoer dataset niet gevonden');
-    %assert_equal(%obs(clinic.stress), 6, attachdata='aantal records wijkt af van verwachting');
-    
-    %futs_case_finish(gegevens invoer);
+  %let futs_macro_name = &sysmacroname.;
+  %futs_case_init('gegevens invoer');
+  
+  %import_data;
+  
+  %assert_exist(clinic.stress1, description='uitvoer dataset niet gevonden');
+  %assert_equal(%obs(clinic.stress), 6, description='aantal records wijkt af');
+  
+  %futs_case_finish;
 %mend;
 
 %macro test_prepare;
-    %let futs_macro_name = &sysmacroname.;
-    %futs_case_init;
+  %let futs_macro_name = &sysmacroname.;
+  %futs_case_init('gegevens verwerking');
 
-    %prepare_data;
-    %assert_exist(work.stress);
+  %prepare_data;
+  %assert_exist(work.stress);
 
-    %local first_hr;
-    %local last_hr;
-    
-    data _null_;
-        set work.stress end=eof;
-        
-        if _n_ = 1 then
-        do;
-          call symputx('first_hr', resthr);
-        end;
-        
-        if eof then
-        do;
-          call symputx('last_hr', resthr);
-        end;
-    run;
-    
-    
-    %assert_sym_compare(&first_hr., &last_hr., gt, attachdata='dataset niet gesorteerd op rust hartslag');
-    
-    %futs_case_finish(gegevens verwerking);
+  %local first_hr;
+  %local last_hr;
+  
+  data _null_;
+      set work.stress end=eof;
+      
+      if _n_ = 1 then
+      do;
+        call symputx('first_hr', resthr);
+      end;
+      
+      if eof then
+      do;
+        call symputx('last_hr', resthr);
+      end;
+  run;    
+  
+  %assert_sym_compare(&first_hr., &last_hr., gt, description='dataset niet gesorteerd op rust hartslag');
+  
+  %futs_case_finish;
 %mend;
 
 %test_init;

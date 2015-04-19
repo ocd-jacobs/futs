@@ -15,6 +15,8 @@
  *  properties may be passed in this format.
  * @param ON_EVENT - Optional block of SAS code to execute 
  *  if the event is fired.
+ * @param DESCRIPTION - Optional quoted string describing the event that
+ *  is to be generated. 
  * @param ABORT - Flag instructing the event system if it should end
  *  the SAS session and stop the batch run.  Valid values are
  *  (YES|TRUE|NO|FALSE)
@@ -32,7 +34,7 @@
                METRIC=,
                PROPERTIES=,
                ON_EVENT=,
-               ABORT= );
+               DESCRIPTION=, ABORT= );
                
 %local 
     ABORT_STATUS
@@ -87,13 +89,13 @@ options linesize=&OPT_LINESIZE;
 
 %let futs_tst_err = %eval(&futs_tst_err. + 1);
 
-%if %length(&ATTACHDATA) > 0 %then
+%if %length(&DESCRIPTION.) > 0 %then
 %do;
   data _null_;
     descr_index = &futs_test_descr_n. + 1;
     
     call symputx('futs_test_descr_n', descr_index );
-    call symputx('futs_test_descr' || strip(put(descr_index, 3.)), %str(&ATTACHDATA.));
+    call symputx('futs_test_descr' || strip(put(descr_index, 3.)), %str(&DESCRIPTION.));
   run;
 %end;
 

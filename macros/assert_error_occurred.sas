@@ -16,6 +16,8 @@
  *  properties may be passed in this format.
  * @param ON_EVENT - Optional block of SAS code to execute 
  *  if the event is fired.
+ * @param DESCRIPTION - Optional quoted string describing the event that
+ *  is to be generated. 
  * @param ABORT - Flag instructing the event system if it should end
  *  the SAS session and stop the batch run.  Valid values are
  *  (YES|TRUE|NO|FALSE)
@@ -41,7 +43,7 @@ Registers an expected error type, so that an assertion firing will not generate 
         METRIC=,
         PROPERTIES=,
         ON_EVENT=,
-        ABORT= );
+        DESCRIPTION=, ABORT= );
 
 %global FUTS_EXPECTED_ERROR;
 
@@ -54,6 +56,6 @@ Registers an expected error type, so that an assertion firing will not generate 
          METRIC=&METRIC,
          PROPERTIES=&PROPERTIES,
          ON_EVENT=&ON_EVENT,
-         ABORT=&ABORT);
+         DESCRIPTION=&DESCRIPTION, ABORT=&ABORT);
 
 %mend assert_error_occurred;

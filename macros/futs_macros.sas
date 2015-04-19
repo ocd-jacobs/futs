@@ -66,7 +66,7 @@
      Prints the total number of tests performed and the number of failed tests
      for testcase &test_name. to the test report futs_rpt.
  */
-  %macro futs_case_finish(case_description);
+  %macro futs_case_finish;
       %let futs_tot_err = %eval(&futs_tot_err.+&futs_tst_err.);
       %let futs_tot_cnt = %eval(&futs_tot_cnt.+&futs_tst_cnt.);
       
@@ -75,7 +75,7 @@
         length l $ 120;
 
         l = lowcase("&futs_macro_name.");
-        l = strip(l) || ": &case_description.";
+        l = strip(l) || ": &futs_case_description.";
         l = strip(l) || " (&futs_tst_cnt. tests / &futs_tst_err. errors)";
         
         l = strip(l) ||
@@ -131,8 +131,11 @@
 /* Initialize a new test case by resetting the array counter of &futs_text_descr.
    to zero.
  */
-  %macro futs_case_init;
+  %let futs_case_description = -;
+ 
+  %macro futs_case_init(case_description);
     data _null_;
+      call symputx('futs_case_description', &case_description.);
       call symputx('futs_test_descr_n', 0);
     run;
   %mend;

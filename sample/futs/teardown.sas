@@ -34,5 +34,6 @@
           futs_program_directory
           futs_src
           futs_directory
-          futs_macro_name;
-  
+          futs_macro_name
+          futs_max_tests
+          futs_case_description;
