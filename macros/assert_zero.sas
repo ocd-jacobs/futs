@@ -24,8 +24,8 @@
  * @macro %generate_event
  * </doc>
  *
- * FUTS v1.1
- * Copyright (c) 2002 ThotWave Technologies, LLC. All rights reserved.
+ * Modified FUTS v1.1
+ * Copyright (c) 2015 John Jacobs. All rights reserved.
  * ---------------------------------------------------------------- */
 
 %macro assert_zero( ARG1,

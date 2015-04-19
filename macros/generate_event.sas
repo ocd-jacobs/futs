@@ -22,8 +22,8 @@
  *  (YES|TRUE|NO|FALSE)
  * </doc>
  *
- * FUTS v1.1
- * Copyright (c) 2006 ThotWave Technologies, LLC. All rights reserved.
+ * Modified FUTS v1.1
+ * Copyright (c) 2015 John Jacobs. All rights reserved.
  * ---------------------------------------------------------------- */
  
 %macro generate_event( TYPE=,

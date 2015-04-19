@@ -7,8 +7,8 @@
  * @symbol FUTS_EXPECTED_ERROR - global symbol written by this macro
  * </doc>
  *
- * FUTS v1.1
- * Copyright (c) 2006 ThotWave Technologies, LLC. All rights reserved.
+ * Modified FUTS v1.1
+ * Copyright (c) 2015 John Jacobs. All rights reserved.
  * ---------------------------------------------------------------- */
  
 %macro expect_error(TYPE=);

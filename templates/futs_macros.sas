@@ -1,28 +1,27 @@
 /*  Source: futs_macros.sas
-
-    Author:  John Jacobs
-    Date  :  15-04-2015
-    
-    version: 1.0
-    as of  : 15-04-2015
-    
-    SAS version: 9.3
-    
-    Purpose: To be included in programs that use modified futs unit testing.
-    
-    Notes: This system of unit testing is based on FUTS (Framework for Unit 
-           Testing SAS programs) by ThotWave(www.thotwave.com).
-           The supplied macros where modified to perform automatic counting
-           of tests and errors.
-           
-           The method of testing is also altered. The original program used
-           one SAS file per test. Running the tests and reporting was done 
-           via a Perl script.
-           
-           This modified version uses one SAS file which contains macros as
-           the individual tests. Reporting is done completely in SAS.
+ *
+ *  Author : John Jacobs
+ *  Date   : 15-04-2015
+ *  Licence: Eclipse Public License
+ *  
+ *  version: 1.1
+ *  as of  : 19-04-2015
+ *
+ *  SAS version: 9.3
+ *  
+ *  Purpose: To be included in programs that use modified futs unit testing.
+ *  
+ *  Notes: This system of unit testing is based on FUTS (Framework for Unit 
+ *         Testing SAS programs) by ThotWave Technologies, LLC
+ *         (www.thotwave.com).
+ *
+ *  Modified FUTS v1.1
+ *  Copyright (c) 2015 John Jacobs. All rights reserved.
  */
 
+
+/* Set maximun number of tests per test case. */
+  %let FUTS_MAX_TESTS = 100;
 
 /* Include the modified futs macros needed for unit testing
  */
@@ -67,7 +66,7 @@
      Prints the total number of tests performed and the number of failed tests
      for testcase &test_name. to the test report futs_rpt.
  */
-  %macro futs_tst_finish(test_name);
+  %macro futs_case_finish;
       %let futs_tot_err = %eval(&futs_tot_err.+&futs_tst_err.);
       %let futs_tot_cnt = %eval(&futs_tot_cnt.+&futs_tst_cnt.);
       
@@ -75,13 +74,20 @@
         file futs_rpt mod;        
         length l $ 120;
 
-        l = "&test_name (&futs_tst_cnt. tests / &futs_tst_err. errors)";
+        l = lowcase("&futs_macro_name.");
+        l = strip(l) || ": &futs_case_description.";
+        l = strip(l) || " (&futs_tst_cnt. tests / &futs_tst_err. errors)";
         
         l = strip(l) ||
-            repeat(' ', 60 - length(l)) ||
+            repeat(' ', 70 - length(l)) ||
             ifc(&futs_tst_err. = 0, '** passed **', '** FAILED **');
 
         put @4 l;  
+        
+        do i = 1 to &futs_test_descr_n.;
+           l = symget('futs_test_descr' || strip(put(i,3.)));
+           put @8 '>> ' l;
+        end;
       run;
       
       %let futs_tst_cnt=0;   
@@ -108,6 +114,32 @@
     run;
   %mend;
 
+/* Create macro array &futs_test_descr.
+   This array will contain the descriptions of failed tests. 
+ */
+  %macro futs_init_array;
+    %do i = 1 %to &FUTS_MAX_TESTS.;
+      %global futs_test_descr&i;
+      %let futs_test_descr&i = -;
+    %end;
+    
+    %global futs_test_descr_n;
+    %let futs_test_descr_n = 0;
+  %mend;
+  %futs_init_array;
+  
+/* Initialize a new test case by resetting the array counter of &futs_text_descr.
+   to zero.
+ */
+  %let futs_case_description = -;
+ 
+  %macro futs_case_init(case_description);
+    data _null_;
+      call symputx('futs_case_description', &case_description.);
+      call symputx('futs_test_descr_n', 0);
+    run;
+  %mend;
+  
 /* Check if the counting variables are already defined indicating either an interupted
    unittest execution or the variable name being used somewhere in user defined code.
    If variables are found to be defined write an error message to the log file and
@@ -132,9 +164,13 @@
 
 /* Initialize the counting variables.
  */
-  %let futs_tst_err=0;
-  %let futs_tot_err=0;
+  %let futs_tst_err = 0;
+  %let futs_tot_err = 0;
   
-  %let futs_tst_cnt=0;
-  %let futs_tot_cnt=0;
-  
+  %let futs_tst_cnt = 0;
+  %let futs_tot_cnt = 0;
+
+/* Initialize the macro variable that will contain the name of the running test case
+ */
+  %let futs_macro_name = -;
+    

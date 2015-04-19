@@ -56,8 +56,8 @@
  * @macro %generate_event
  * </doc>
  *
- * FUTS v1.1
- * Copyright (c) 2002 ThotWave Technologies, LLC. All rights reserved.
+ * Modified FUTS v1.1
+ * Copyright (c) 2015 John Jacobs. All rights reserved.
  * ---------------------------------------------------------------- */
 
 %macro assert_not_equal( ARG1, ARG2, DATATYPE=, PRECISION=1e-15,

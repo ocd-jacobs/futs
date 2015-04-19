@@ -1,24 +1,24 @@
 /*  Source: futs_macros.sas
-
-    Author: John Jacobs
-    Date  : 15-04-2015
-    
-    SAS version: 9.3
-    
-    Purpose: To be included in programs that use modified futs unit testing.
-    
-    Notes: This system of unit testing is based on FUTS (Framework for Unit 
-           Testing SAS programs) by ThotWave(www.thotwave.com).
-           The supplied macros where modified to perform automatic counting
-           of tests and errors.
-           
-           The method of testing is also altered. The original program used
-           one SAS file per test. Running the tests and reporting was done 
-           via a Perl script.
-           
-           This modified version uses one SAS file which contains macros as
-           the individual tests. Reporting is done completely in SAS.
+ *
+ *  Author : John Jacobs
+ *  Date   : 15-04-2015
+ *  Licence: Eclipse Public License
+ *  
+ *  version: 1.1
+ *  as of  : 19-04-2015
+ *
+ *  SAS version: 9.3
+ *  
+ *  Purpose: To be included in programs that use modified futs unit testing.
+ *  
+ *  Notes: This system of unit testing is based on FUTS (Framework for Unit 
+ *         Testing SAS programs) by ThotWave Technologies, LLC
+ *         (www.thotwave.com).
+ *
+ *  Modified FUTS v1.1
+ *  Copyright (c) 2015 John Jacobs. All rights reserved.
  */
+
 
 /* Set maximun number of tests per test case. */
   %let FUTS_MAX_TESTS = 100;

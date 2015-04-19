@@ -5,8 +5,8 @@
  * @return 1 if the file exists, 0 if it doesn't 
  * </doc>
  *
- * FUTS v1.1
- * Copyright (c) 2005 ThotWave Technologies, LLC. All rights reserved.
+ * Modified FUTS v1.1
+ * Copyright (c) 2015 John Jacobs. All rights reserved.
  * ---------------------------------------------------------------- */
 
 %macro fexist(FILEREF);
