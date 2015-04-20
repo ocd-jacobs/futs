@@ -2,7 +2,7 @@
 
    test_init: werk voorbereiding (2 tests / 0 errors)                     ** passed **
    test_import: gegevens invoer (2 tests / 1 errors)                      ** FAILED **
-       >> uitvoer dataset niet gevonden
+       >> Data set clinic.stress1 does not exist
    test_prepare: gegevens verwerking (2 tests / 1 errors)                 ** FAILED **
        >> dataset niet gesorteerd op rust hartslag
 

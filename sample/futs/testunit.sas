@@ -61,7 +61,7 @@
   
   %import_data;
   
-  %assert_exist(clinic.stress1, description='uitvoer dataset niet gevonden');
+  %assert_exist(clinic.stress1);
   %assert_equal(%obs(clinic.stress), 6, description='aantal records wijkt af');
   
   %futs_case_finish;

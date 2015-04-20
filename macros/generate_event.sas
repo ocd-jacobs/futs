@@ -95,7 +95,16 @@ options linesize=&OPT_LINESIZE;
     descr_index = &futs_test_descr_n. + 1;
     
     call symputx('futs_test_descr_n', descr_index );
-    call symputx('futs_test_descr' || strip(put(descr_index, 3.)), %str(&DESCRIPTION.));
+    call symputx('futs_test_descr' || strip(put(descr_index, 3.)), &DESCRIPTION.);
+  run;
+%end;
+%else
+%do;
+  data _null_;
+    descr_index = &futs_test_descr_n. + 1;
+    
+    call symputx('futs_test_descr_n', descr_index );
+    call symputx('futs_test_descr' || strip(put(descr_index, 3.)), "&MESSAGE.");
   run;
 %end;
 
